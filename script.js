@@ -21,7 +21,7 @@ function writePassword() {
 
 function generatePassword() {
   // pop up windows ask for constraint
-  var pswLength = prompt("please enter the length of your password:")
+  var pswLength = validLength()
   var ifUpper = confirm("do you want upper case letter in your password?")
   var ifLower = confirm("do you want lower case letter in you password?")
   var ifNumbers = confirm("do you want numbers in your password?")
@@ -29,23 +29,43 @@ function generatePassword() {
   
   // generage a 'basket' of characters that user requires
   var validChars = []
-  if(ifUpper) { validChars.concat(upperChar) }
-  else if(ifLower) { validChars.concat(lowerChar) } 
-  else if(ifNumbers) { validChars.concat(number) }
-  else if(ifSpecial) { validChars.concat(specialChar) }
-
+  if(ifUpper) { validChars = validChars.concat(upperChar) }
+  if(ifLower) { validChars = validChars.concat(lowerChar) }
+  if(ifNumbers) { validChars = validChars.concat(number) }
+  if(ifSpecial) { validChars = validChars.concat(specialChar) }
   // generate a password with required length
   var result = ""
   for (var i = 0; i < pswLength; i++) {
     var index = randomNum(validChars.length)
     result += validChars[index]
-    return result
   }
+
+  // check if the password meets every requirement
+
+  return result
 }
 
 // generate a random number between 0 and range
 function randomNum(range) {
   var result = Math.floor(Math.random() * range)
+  return result
+}
+
+// ask for length of password
+function validLength() {
+  var input = prompt("please enter the length of your password:")
+  var result = parseInt(input)
+  // check if input valid number
+  if (result) {
+    // check if input number in range
+    if (result < 8 || result > 128) {
+      alert("Password length must between 8 and 128")
+      result = validLength()
+    } else { return result }
+  } else {
+    alert("Please enter a number")
+    result = validLength()
+  }
   return result
 }
 
