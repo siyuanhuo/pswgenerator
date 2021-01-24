@@ -33,15 +33,9 @@ function generatePassword() {
   if(ifLower) { validChars = validChars.concat(lowerChar) }
   if(ifNumbers) { validChars = validChars.concat(number) }
   if(ifSpecial) { validChars = validChars.concat(specialChar) }
+  
   // generate a password with required length
-  var result = ""
-  for (var i = 0; i < pswLength; i++) {
-    var index = randomNum(validChars.length)
-    result += validChars[index]
-  }
-
-  // check if the password meets every requirement
-
+  var result = generateValidPassword(pswLength, ifUpper, ifLower, ifNumbers, ifSpecial, validChars)
   return result
 }
 
@@ -55,7 +49,7 @@ function randomNum(range) {
 function validLength() {
   var input = prompt("please enter the length of your password:")
   var result = parseInt(input)
-  // check if input valid number
+  // check if inputed valid number
   if (result) {
     // check if input number in range
     if (result < 8 || result > 128) {
@@ -66,6 +60,40 @@ function validLength() {
     alert("Please enter a number")
     result = validLength()
   }
+  return result
+}
+
+// check if result meets all requirements
+function allExist(ifU, ifL, ifN, ifS, psw) {
+  if (ifU) {
+    var patt = RegExp("[A-Z]")
+    if (!patt.test(psw)) { return false }
+  }
+  if (ifL) {
+    var patt = RegExp("[a-z]")
+    if (!patt.test(psw)) { return false }
+  }
+  if (ifN) {
+    var patt = RegExp("[1234567890]")
+    if (!patt.test(psw)) { return false }
+  }
+  if (ifS) {
+    var patt = RegExp("[!@#$%^&*,.?]")
+    if (!patt.test(psw)) { return false }
+  }
+  return true
+}
+
+// generate a valid password with given length and given valid characters that meets all requirements
+function generateValidPassword(len, ifU, ifL, ifN, ifS, validChars) {
+  var result = ""
+  for (var i = 0; i < len; i++) {
+    var index = randomNum(validChars.length)
+    result += validChars[index]
+  }
+
+  if (!allExist(ifU, ifL, ifN, ifS, result)) { result = generateValidPassword(len, ifU, ifL, ifN, ifS, validChars) }
+  
   return result
 }
 
