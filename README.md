@@ -1,5 +1,7 @@
 # Password Generator (Homework 3)
 
+[Password Generator](https://siyuanhuo.github.io/pswgenerator)
+
 ## Acceptance Criteria
 
 ```
